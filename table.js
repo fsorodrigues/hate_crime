@@ -7,12 +7,19 @@ d3.csv('hate_crimes.csv', function (error,data) {
        + lightness  + "%,"
        + alpha + ")";
      return colorString;
-   }; //closing getColor
+   };
 
-  var makeColor = function(d) {
-     var hue = d.value;
-     return getColor(hue*2.19, 70, 40, 0.5);
-   }; //closing makeColor
+   var makeColor = function(d) {
+      var alpha = d.value/100
+      if (d.value > 30) {
+        var hue = 0;
+      }
+      else {
+        var hue = 235;
+      }
+
+      return getColor(hue, 70, 40, alpha);
+    };
 
   function tabulate(data, columns) {
 		var table = d3.select('.content')
@@ -28,7 +35,7 @@ d3.csv('hate_crimes.csv', function (error,data) {
          .enter()
 		     .append('th')
 		     .text(function (column) { return column; })
-         .attr("class", function (column) { return column; });
+         .attr("class", function (column) { return "_" + column; });
 
 		var rows = tbody.selectAll('tr')
 		  .data(data)
